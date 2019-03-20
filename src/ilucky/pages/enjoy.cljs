@@ -8,8 +8,9 @@
     (swap! app-state assoc :random (get (vec items) (rand-int (count items))))))
 
 (defn add-item []
-  (swap! app-state update :items conj (-> @app-state :item))
-  (swap! app-state assoc :item ""))
+  (if-not (clojure.string/blank? (:item @app-state))
+    ((swap! app-state update :items conj (-> @app-state :item))
+      (swap! app-state assoc :item ""))))
 
 (defn enjoy []
   [:div.enjoy-box
