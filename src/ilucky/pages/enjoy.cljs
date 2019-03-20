@@ -8,9 +8,8 @@
     (swap! app-state assoc :random (get (vec items) (rand-int (count items))))))
 
 (defn add-item []
-  (if-not (clojure.string/blank? (:item @app-state))
-    ((swap! app-state update :items conj (-> @app-state :item))
-      (swap! app-state assoc :item ""))))
+  (swap! app-state update :items conj (-> @app-state :item))
+  (swap! app-state assoc :item ""))
 
 (defn enjoy []
   [:div.enjoy-box
@@ -24,7 +23,8 @@
 
     [ant/button {:type "primary"
                  :class ["enjoy-button"]
-                 :on-click #(add-item)} "Add"]
+                 :on-click #((if-not (clojure.string/blank? (:item @app-state))
+                              add-item))} "Add"]
 
     [ant/button {:class ["random-button" "enjoy-button"]
                  :on-click #(random-generate)} "Random"]
