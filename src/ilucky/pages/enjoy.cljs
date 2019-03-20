@@ -7,6 +7,10 @@
   (let [items (-> @app-state :items)]
     (swap! app-state assoc :random (get (vec items) (rand-int (count items))))))
 
+(defn add-item []
+  (swap! app-state update :items conj (-> @app-state :item))
+  (swap! app-state assoc :item ""))
+
 (defn enjoy []
   [:div.enjoy-box
    [:div.left-box
@@ -19,8 +23,7 @@
 
     [ant/button {:type "primary"
                  :class ["enjoy-button"]
-                 :on-click #((swap! app-state update :items conj (-> @app-state :item))
-                              (swap! app-state assoc :item ""))} "Add"]
+                 :on-click #(add-item)} "Add"]
 
     [ant/button {:class ["random-button" "enjoy-button"]
                  :on-click #(random-generate)} "Random"]
