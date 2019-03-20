@@ -23,8 +23,9 @@
 
     [ant/button {:type "primary"
                  :class ["enjoy-button"]
-                 :on-click #((if-not (clojure.string/blank? (:item @app-state))
-                              add-item))} "Add"]
+                 :on-click #(if-not (clojure.string/blank? (:item @app-state))
+                               (add-item)
+                               (ant/message-info "Boş yapıyorsun san ki"))} "Add"]
 
     [ant/button {:class ["random-button" "enjoy-button"]
                  :on-click #(random-generate)} "Random"]
