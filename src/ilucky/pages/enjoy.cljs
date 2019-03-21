@@ -14,30 +14,35 @@
 (defn enjoy []
   [:div.enjoy-box
    [:div.left-box
-    [ant/input {:type "text"
-                :class ["enjoy-input"]
-                :value (-> @app-state :item)
+    [ant/input {:type        "text"
+                :class       ["enjoy-input"]
+                :value       (-> @app-state :item)
                 :placeholder "Data input"
-                :on-change #(swap! app-state assoc :item
-                                   (-> % .-target .-value))}]
+                :on-change   #(swap! app-state assoc :item
+                                     (-> % .-target .-value))}]
 
-    [ant/button {:type "primary"
-                 :class ["enjoy-button"]
+    [ant/button {:type     "primary"
+                 :class    ["enjoy-button"]
                  :on-click #(if-not (clojure.string/blank? (:item @app-state))
-                               (add-item)
-                               (ant/message-info "Boş yapıyorsun san ki"))} "Add"]
+                              (add-item)
+                              (ant/message-info "Boş yapıyorsun sanki"))} "Add"]
 
-    [ant/button {:class ["random-button" "enjoy-button"]
+    [ant/button {:class    ["random-button" "enjoy-button"]
                  :on-click #(random-generate)} "Random"]
 
-    [ant/button {:class ["clear-button" "enjoy-button"]
-                 :on-click #((swap! app-state assoc :item "")
-                              (swap! app-state assoc :items [])
-                              (swap! app-state assoc :random ""))} "Clear"]]
+    [ant/button {:class    ["clear-button" "enjoy-button"]
+                 :on-click #(swap! app-state dissoc :item :items :random)} "Clear"]]
+   ;
+   ;
+   ;(reset! app-state (merge @app-state {:item   " "
+   ;                                     :items  []
+   ;                                     :random " "}))
+   ;
+
    [:div.right-box
     [:ul
      (for [item (-> @app-state :items)]
        ;^{:key item}
        ^{:key (str (random-uuid))} [:li.list-text item])]
     (if-not (clojure.string/blank? (-> @app-state :random))
-      [:p.random-text.nostalgic-box-1  (-> @app-state :random)])]])
+      [:p.random-text.nostalgic-box-1 (-> @app-state :random)])]])
